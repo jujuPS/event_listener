@@ -1,6 +1,6 @@
 # event_listener   <br><br>
 
-This is a training for how to make multiple independent listeners for the same events.  <br>
+This is a training for how to make multiple independent listeners for the same events.  <br><br>
 The point of the example：  <br> <br>
 1 . Let user input how many div they want in the text, and when the user click submit button, These div group will show in this page. <br> <br>
 2 . One div has to be used with one button, This is a div group.  <br> <br>
