@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+    </head>
+    <body>
+        <input id="inputCount" type="text" value="">
+        <button id="submit" type="button" >submit</button>
+        <div class="append_div"></div>
+    </body>
+    <script type="text/javascript">
+    var submitBtn = document.getElementById('submit');
+    var inputElement = document.getElementById('inputCount');
+    var appendDiv = document.getElementsByClassName('append_div')[0];
+    var boxElements = document.getElementsByClassName('box');
+    var btnElements = document.getElementsByClassName('animate');
+    var boxObjects = [];
+
+    var Box = function(element){
+        this.element = element;
+        this.oringinHeight = element.offsetHeight;
+        this.action = '';
+
+        this.slideUp = function(){
+            var nowHeight = this.element.offsetHeight;
+            this.action = 'UP';
+            var thisBox = this;
+            this.interval = setInterval(function(){
+                nowHeight--;
+                thisBox.element.style.height = nowHeight + 'px';
+                if(nowHeight <= 0){
+                    clearInterval(thisBox.interval);
+                    thisBox.action = '';
+                }
+            }, 100);
+        }
+
+        this.slideDown = function(){
+            var nowHeight = this.element.offsetHeight;
+            this.action = 'DOWN';
+            var thisBox = this;
+            this.interval = setInterval(function(){
+                nowHeight++;
+                thisBox.element.style.height = nowHeight + 'px';
+                if(nowHeight >= thisBox.oringinHeight){
+                    clearInterval(thisBox.interval);
+                    thisBox.action = '';
+                }
+            }, 100)
+        }
+
+        this.stop = function(){
+            clearInterval(this.interval);
+        }
+
+        this.slideToggle = function(){
+            this.stop();
+            if(this.action == 'UP'){
+                this.slideDown();
+            }else if(this.action == 'DOWN'){
+                this.slideUp();
+            }else if(this.element.offsetHeight > 0){
+                this.slideUp();
+            }else {
+                this.slideDown();
+            }
+        }
+    }
+
+    var onkeydown = function(){
+      if(window.event.keyCode == '13'){
+          createDiv(inputElement.value);
+      }
+    }
+
+    function createDiv(number){
+        appendDiv.innerHTML = '';
+        for ( i = 0 ; i < number ; i++){
+          var btn = document.createElement('button');
+          btn.className = 'animate';
+          btn.style.cssText = 'margin-top:10px;';
+          btn.appendChild(document.createTextNode('animate'));
+
+          var div = document.createElement('div');
+          div.className = 'box';
+          div.style.cssText = 'color:white; background-color:#19B5FE; height:50px;';
+
+          appendDiv.appendChild(btn);
+          appendDiv.appendChild(div);
+        }
+        for ( i = 0 ; i < number ; i++){
+          boxObjects[i] = new Box(boxElements[i]);
+          btnClick(btnElements[i], boxObjects[i]);
+        }
+    }
+
+    function btnClick(btn, box){
+      btn.addEventListener('click', function(){
+        box.slideToggle();
+      })
+    }
+
+    submitBtn.addEventListener('click', function(){
+      createDiv(inputElement.value);
+    });
+
+    </script>
+</html>
